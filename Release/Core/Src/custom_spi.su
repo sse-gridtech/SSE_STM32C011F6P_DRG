@@ -1,0 +1,8 @@
+../Core/Src/custom_spi.c:24:6:SPI1_select	0	static
+../Core/Src/custom_spi.c:37:6:SPI1_clear	8	static
+../Core/Src/custom_spi.c:43:9:SPI1_IsBusy	0	static,ignoring_inline_asm
+../Core/Src/custom_spi.c:58:6:SPI1_TransmitReceive	8	static,ignoring_inline_asm
+../Core/Src/custom_spi.c:71:6:SPI1_Init	8	static,ignoring_inline_asm
+../Core/Src/custom_spi.c:122:6:HAL_SPI_TxRxCpltCallback	0	static
+../Core/Src/custom_spi.c:134:6:HAL_SPI_ErrorCallback	0	static
+../Core/Src/custom_spi.c:143:6:SPI1_Error_Handler	0	static,ignoring_inline_asm

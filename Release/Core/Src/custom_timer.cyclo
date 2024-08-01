@@ -1,0 +1,9 @@
+../Core/Src/custom_timer.c:27:10:TIM_getSecs	1
+../Core/Src/custom_timer.c:31:10:TIM_getMillis	1
+../Core/Src/custom_timer.c:40:6:TIM_delay	2
+../Core/Src/custom_timer.c:46:9:TIM_Fired	3
+../Core/Src/custom_timer.c:63:6:TIMER_Start	2
+../Core/Src/custom_timer.c:83:6:TIMER_Init	4
+../Core/Src/custom_timer.c:91:6:LED1_setStatus	2
+../Core/Src/custom_timer.c:103:6:LED1_Control	2
+../Core/Src/custom_timer.c:246:6:TIMER_Error_Handler	1

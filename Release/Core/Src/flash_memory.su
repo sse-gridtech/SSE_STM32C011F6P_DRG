@@ -1,0 +1,12 @@
+../Core/Src/flash_memory.c:14:10:MEMORY_LINE_SHIFT	0	static
+../Core/Src/flash_memory.c:22:6:flashmem_select	8	static
+../Core/Src/flash_memory.c:26:6:flashmem_unselect	8	static
+../Core/Src/flash_memory.c:30:6:flashmem_select_send_receive	24	static
+../Core/Src/flash_memory.c:40:6:flashmem_single_byte_command	288	static
+../Core/Src/flash_memory.c:54:6:flashmem_command_with_address	288	static
+../Core/Src/flash_memory.c:93:6:flashmem_read1	16	static,ignoring_inline_asm
+../Core/Src/flash_memory.c:100:6:flashmem_read	32	static,ignoring_inline_asm
+../Core/Src/flash_memory.c:117:6:flashmem_erase_commands	24	static
+../Core/Src/flash_memory.c:132:9:flashmem_erase	8	static,ignoring_inline_asm
+../Core/Src/flash_memory.c:152:6:flashmem_write_completion2	40	static
+../Core/Src/flash_memory.c:173:9:flashmem_write	8	static,ignoring_inline_asm

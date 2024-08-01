@@ -1,0 +1,4 @@
+../Core/Src/sse_pendencias.c:17:6:SSE_pendencias_init	12	static
+../Core/Src/sse_pendencias.c:40:6:SSE_pendencias_check	24	static
+../Core/Src/sse_pendencias.c:86:6:SSE_pendencias_write	0	static
+../Core/Src/sse_pendencias.c:101:6:SSE_pendenciasABS_write	8	static

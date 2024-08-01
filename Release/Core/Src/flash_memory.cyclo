@@ -1,0 +1,12 @@
+../Core/Src/flash_memory.c:14:10:MEMORY_LINE_SHIFT	1
+../Core/Src/flash_memory.c:22:6:flashmem_select	1
+../Core/Src/flash_memory.c:26:6:flashmem_unselect	1
+../Core/Src/flash_memory.c:30:6:flashmem_select_send_receive	2
+../Core/Src/flash_memory.c:40:6:flashmem_single_byte_command	1
+../Core/Src/flash_memory.c:54:6:flashmem_command_with_address	4
+../Core/Src/flash_memory.c:93:6:flashmem_read1	1
+../Core/Src/flash_memory.c:100:6:flashmem_read	2
+../Core/Src/flash_memory.c:117:6:flashmem_erase_commands	2
+../Core/Src/flash_memory.c:132:9:flashmem_erase	3
+../Core/Src/flash_memory.c:152:6:flashmem_write_completion2	3
+../Core/Src/flash_memory.c:173:9:flashmem_write	2

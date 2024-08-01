@@ -1,0 +1,8 @@
+../Core/Src/sse_protocol.c:25:6:SSE_EscreverBytes	2
+../Core/Src/sse_protocol.c:43:6:SSE_EscreverId	3
+../Core/Src/sse_protocol.c:65:6:SSE_EscreverEscopo	1
+../Core/Src/sse_protocol.c:82:6:SSE_EscreverDados	4
+../Core/Src/sse_protocol.c:111:6:SSE_EscreverRaw	3
+../Core/Src/sse_protocol.c:130:10:SSE_CalcularCRC16	1
+../Core/Src/sse_protocol.c:159:6:SSE_ChecarCRC16	1
+../Core/Src/sse_protocol.c:170:6:SSE_EscreverIdCmd	1

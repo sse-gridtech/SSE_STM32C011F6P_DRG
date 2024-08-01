@@ -1,0 +1,9 @@
+../Core/Src/SSEMeshRadio.c:4:10:SSEMeshRadio_getTimeout	1
+../Core/Src/SSEMeshRadio.c:8:10:SSEMeshRadio_getMaxDataLen	1
+../Core/Src/SSEMeshRadio.c:12:10:SSEMeshRadio_getSENDERID	1
+../Core/Src/SSEMeshRadio.c:16:10:SSEMeshRadio_getFLAGS	1
+../Core/Src/SSEMeshRadio.c:20:10:SSEMeshRadio_getTARGETID	1
+../Core/Src/SSEMeshRadio.c:24:10:SSEMeshRadio_getFINALID	1
+../Core/Src/SSEMeshRadio.c:28:10:SSEMeshRadio_getDATA	1
+../Core/Src/SSEMeshRadio.c:32:10:SSEMeshRadio_getDATALEN	1
+../Core/Src/SSEMeshRadio.c:36:10:SSEMeshRadio_getRSSI	1

@@ -1,0 +1,14 @@
+../Core/Src/sse_flash_memory.c:26:13:SSE_Flash2_defines	1
+../Core/Src/sse_flash_memory.c:91:13:SSE_Flash3_defines	1
+../Core/Src/sse_flash_memory.c:117:6:SSE_reWriteFlash1	1
+../Core/Src/sse_flash_memory.c:140:6:SSE_reWriteFlash2	1
+../Core/Src/sse_flash_memory.c:162:6:SSE_reWriteFlash3	1
+../Core/Src/sse_flash_memory.c:185:6:SSE_reWriteFlash4	1
+../Core/Src/sse_flash_memory.c:208:6:SSE_readReWriteFlashData	1
+../Core/Src/sse_flash_memory.c:232:6:SSE_writeFlashData	2
+../Core/Src/sse_flash_memory.c:246:6:SSE_readFlashDataASCII	2
+../Core/Src/sse_flash_memory.c:259:6:SSE_readFlash1	4
+../Core/Src/sse_flash_memory.c:294:6:SSE_readFlash2	3
+../Core/Src/sse_flash_memory.c:320:6:SSE_readFlash3	4
+../Core/Src/sse_flash_memory.c:350:6:SSE_readFlash4	3
+../Core/Src/sse_flash_memory.c:372:6:SSE_Flash_Initialize	1

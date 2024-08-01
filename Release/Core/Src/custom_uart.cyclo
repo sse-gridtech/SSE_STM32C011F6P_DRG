@@ -1,0 +1,12 @@
+../Core/Src/custom_uart.c:25:6:SERIAL0_Init	5
+../Core/Src/custom_uart.c:30:6:SERIAL0_Receive	1
+../Core/Src/custom_uart.c:91:6:SERIAL0_BaudRate	1
+../Core/Src/custom_uart.c:95:19:SERIAL0_available	3
+../Core/Src/custom_uart.c:110:19:SERIAL0_read	2
+../Core/Src/custom_uart.c:136:15:SERIAL0_send	3
+../Core/Src/custom_uart.c:149:6:SERIAL0_clear	1
+../Core/Src/custom_uart.c:153:9:SERIAL0_receiveUntil	3
+../Core/Src/custom_uart.c:170:6:HAL_UART_TxCpltCallback	1
+../Core/Src/custom_uart.c:177:6:HAL_UART_RxCpltCallback	1
+../Core/Src/custom_uart.c:190:6:HAL_UART_ErrorCallback	1
+../Core/Src/custom_uart.c:198:6:UART_Error_Handler	1
