@@ -356,6 +356,7 @@ int main(void)
   //MX_TIM3_Init();
   //MX_SPI1_Init();
   //MX_USART1_UART_Init();
+  //MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   SPI1_Init();
   TIMER_Init();
@@ -649,6 +650,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : PA0 PA4 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_4;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
   /*Configure GPIO pin : PA1 */
   GPIO_InitStruct.Pin = GPIO_PIN_1;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -656,17 +663,20 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PA2 PA3 */
-  GPIO_InitStruct.Pin = GPIO_PIN_2|GPIO_PIN_3;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+#if RADIO == 1
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI0_1_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI0_1_IRQn);
 
+  HAL_NVIC_SetPriority(EXTI4_15_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI4_15_IRQn);
+#endif
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
+#if RADIO == 1
 void MDC_initRadio(void)
 {
     while(RFM69_initialize(RF69_915MHZ, flash1.MDC_RADIOID, flash1.MDC_RADIONET, true, false, 31) == false)
@@ -676,7 +686,7 @@ void MDC_initRadio(void)
 	}
 	RFM69_receiveBegin();
 }
-
+#endif
 void FU_InitFlash(void)
 {
     //memory_init();
@@ -794,6 +804,7 @@ void MDC550_Meter_init()
 void MDC550_Meter_loop()
 {
 #if (MEDIDOR_TIPO == MEDIDOR_TIPO_1_PIMA)
+	MDC_readMedidor();
 #elif (MEDIDOR_TIPO == MEDIDOR_TIPO_2_NBR)
 	MDC_readMedidor();
 #elif (MEDIDOR_TIPO == MEDIDOR_TIPO_3_NBR_EXT)
@@ -862,30 +873,27 @@ void MDC_processETC(void)
 	if(ReadETC_311())
 	{
 		// caso o medidor não tenha sido alocado
-			medidor.id_[0] = 0x00;
-			medidor.id_[1] = pima_pacote.id[0];
-			medidor.id_[2] = pima_pacote.id[1];
-			medidor.id_[3] = pima_pacote.id[2];
-			medidor.id_[4] = pima_pacote.id[3];
-			medidor.id_[5] = pima_pacote.id[4];
-			medidor.t_pkg = pima_pacote.t;
-			medidor.status = MEDIDOR_ATIVO; //MEDIDOR_ATIVO;
-            LED1_setStatus(0);
+		medidor.id_[0] = 0x00;
+		medidor.id_[1] = pima_pacote.id[0];
+		medidor.id_[2] = pima_pacote.id[1];
+		medidor.id_[3] = pima_pacote.id[2];
+		medidor.id_[4] = pima_pacote.id[3];
+		medidor.id_[5] = pima_pacote.id[4];
+		medidor.t_pkg = pima_pacote.t;
+		medidor.status = MEDIDOR_ATIVO; //MEDIDOR_ATIVO;
+        LED1_setStatus(0);
 		// atualização da medição atual
 		switch((pima_pacote.escopo[0] << 8) | pima_pacote.escopo[1])
 		{
 		case TOTAL_E_ATIVA:
 			memcpy(medidor.en_ativa,pima_pacote.dados,3);
 			break;
-
 		case TOTAL_E_INDUTIVA:
 			memcpy(medidor.en_indutiva,pima_pacote.dados,3);
 			break;
-
 		case TOTAL_E_CAPACITIVA:
 			memcpy(medidor.en_capacitiva,pima_pacote.dados,3);
 			break;
-
 		case TOTAL_E_ATIVA_REVERSA:
 			memcpy(medidor.en_ativareversa,pima_pacote.dados,3);
 			break;
@@ -1469,7 +1477,6 @@ void MDC_readMedidor(void)
  */
 void MDC_radio(void)
 {
-	uint32_t buff;
     uint8_t temp_data[40];
     uint8_t _answer=1;
     uint8_t empty_mdc_id[6] = {0};

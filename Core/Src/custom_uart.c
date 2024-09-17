@@ -19,7 +19,18 @@ static volatile uint16_t SERIAL0_rx_buffer_ini = 0;
 uint16_t SERIAL0_rx_buffer_end=0;
 volatile uint8_t UART0_writeStatus = 0;
 
+#define SERIAL1_MINIMAL     0
+
+#define SERIAL1_BAUD_RATE	9600
+#define SERIAL1_BUFFER_LEN  300//300
+UART_HandleTypeDef huart2;
+uint8_t  SERIAL1_rx_buffer[SERIAL1_BUFFER_LEN];
+static volatile uint16_t SERIAL1_rx_buffer_ini = 0;
+uint16_t SERIAL1_rx_buffer_end=0;
+volatile uint8_t UART1_writeStatus = 0;
+
 static void MX_USART1_UART_Init(void);
+static void MX_USART2_UART_Init(void);
 void UART_Error_Handler(void);
 
 void SERIAL0_Init(void)
@@ -168,14 +179,14 @@ uint8_t SERIAL0_receiveUntil(uint16_t _size, uint16_t _timeout)
 }
 #endif
 
-void HAL_UART_TxCpltCallback(UART_HandleTypeDef *UartHandle)
+void HAL_UART1_TxCpltCallback(UART_HandleTypeDef *UartHandle)
 {
   /* Set transmission flag: transfer complete */
   //UartReady = SET;
 	UART0_writeStatus=1;
 }
 
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle)
+void HAL_UART1_RxCpltCallback(UART_HandleTypeDef *UartHandle)
 {
   /* Set transmission flag: transfer complete */
   //UartReady = SET;
@@ -188,10 +199,176 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle)
 	//SERCOM0_USART_Read(&SERIAL0_rx_buffer[SERIAL0_rx_buffer_end], 1);
 	HAL_UART_Receive_IT(&huart1, &SERIAL0_rx_buffer[SERIAL0_rx_buffer_end], 1);
 }
-void HAL_UART_ErrorCallback(UART_HandleTypeDef *UartHandle)
+void HAL_UART1_ErrorCallback(UART_HandleTypeDef *UartHandle)
 {
 	HAL_UART_Receive_IT(&huart1, &SERIAL0_rx_buffer[SERIAL0_rx_buffer_end], 1);
 }
+
+void SERIAL1_Init(void)
+{
+	MX_USART2_UART_Init();
+}
+
+void SERIAL1_Receive(void)
+{
+	HAL_UART_Receive_IT(&huart2, &SERIAL1_rx_buffer[SERIAL1_rx_buffer_end], 1);
+}
+
+/**
+  * @brief USART2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART2_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART2_Init 0 */
+
+  /* USER CODE END USART2_Init 0 */
+
+  /* USER CODE BEGIN USART2_Init 1 */
+
+  /* USER CODE END USART2_Init 1 */
+  huart2.Instance = USART2;
+  huart2.Init.BaudRate = SERIAL1_BAUD_RATE;
+  huart2.Init.WordLength = UART_WORDLENGTH_8B;
+  huart2.Init.StopBits = UART_STOPBITS_1;
+  huart2.Init.Parity = UART_PARITY_NONE;
+  huart2.Init.Mode = UART_MODE_TX_RX;
+  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+  huart2.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  huart2.Init.ClockPrescaler = UART_PRESCALER_DIV1;
+  huart2.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+
+  if (HAL_UART_Init(&huart2) != HAL_OK)
+  {
+	  UART_Error_Handler();
+  }
+  if (HAL_UARTEx_SetTxFifoThreshold(&huart2, UART_TXFIFO_THRESHOLD_1_8) != HAL_OK)
+  {
+  	  UART_Error_Handler();
+  }
+  if (HAL_UARTEx_SetRxFifoThreshold(&huart2, UART_RXFIFO_THRESHOLD_1_8) != HAL_OK)
+  {
+  	  UART_Error_Handler();
+  }
+  if (HAL_UARTEx_DisableFifoMode(&huart2) != HAL_OK)
+  {
+  	  UART_Error_Handler();
+  }
+  /* USER CODE BEGIN USART2_Init 2 */
+
+  /* USER CODE END USART2_Init 2 */
+
+}
+
+// UART1
+void SERIAL1_BaudRate(uint32_t _baud)
+{
+	huart2.Init.BaudRate = _baud;
+}
+
+volatile uint16_t SERIAL1_available(void)
+{
+	if(SERIAL1_rx_buffer_end==SERIAL1_rx_buffer_ini)
+	{
+		return 0;
+	}
+	else if(SERIAL1_rx_buffer_end>SERIAL1_rx_buffer_ini)
+	{
+		return (SERIAL1_rx_buffer_end - SERIAL1_rx_buffer_ini);
+	}
+	else
+	{
+		return (SERIAL1_BUFFER_LEN-SERIAL1_rx_buffer_ini+SERIAL1_rx_buffer_end);
+	}
+}
+volatile uint16_t SERIAL1_read(uint8_t* _buffer, uint16_t _size)
+{
+    uint16_t leitura = 0;
+    uint16_t restante = 0;
+    if((SERIAL1_rx_buffer_ini + _size) >= SERIAL1_BUFFER_LEN)
+    {
+
+        restante = (SERIAL1_rx_buffer_ini + _size - SERIAL1_BUFFER_LEN);
+        leitura = (_size - restante);
+
+        memcpy(_buffer,&SERIAL1_rx_buffer[SERIAL1_rx_buffer_ini],leitura);
+
+        SERIAL1_rx_buffer_ini%=SERIAL1_rx_buffer_ini;
+
+        memcpy(&_buffer[leitura],&SERIAL1_rx_buffer[SERIAL1_rx_buffer_ini],restante);
+
+        SERIAL1_rx_buffer_ini+=restante;
+    }
+    else
+    {
+        memcpy(_buffer,&SERIAL1_rx_buffer[SERIAL1_rx_buffer_ini],_size);
+        SERIAL1_rx_buffer_ini+=_size;
+    }
+    return _size;
+}
+
+volatile void SERIAL1_send (uint8_t* _buffer, uint16_t _size)
+{
+	if(_size>0)
+	{
+		UART0_writeStatus=0;
+		//R_UART2_Send(_buffer,_size);
+        //SERCOM0_USART_Write(_buffer,_size);
+		HAL_UART_Transmit_IT(&huart1, _buffer, _size);
+		while(UART0_writeStatus==0);
+	}
+}
+
+#if SERIAL1_MINIMAL == 0
+void SERIAL1_clear(void)
+{
+    SERIAL1_rx_buffer_ini=SERIAL1_rx_buffer_end;
+}
+uint8_t SERIAL1_receiveUntil(uint16_t _size, uint16_t _timeout)
+{
+    uint32_t serial_time_start = TIM_getMillis();
+
+    while((SERIAL1_available()<_size)&&((TIM_getMillis()-serial_time_start)<_timeout))
+    {
+        //WDT_Clear();
+    	__NOP();
+    }
+    if(SERIAL1_available()>=_size)
+	{
+		return 1;
+	}
+    return 0;
+}
+#endif
+
+void HAL_UART2_TxCpltCallback(UART_HandleTypeDef *UartHandle)
+{
+  /* Set transmission flag: transfer complete */
+  //UartReady = SET;
+	UART1_writeStatus=1;
+}
+
+void HAL_UART2_RxCpltCallback(UART_HandleTypeDef *UartHandle)
+{
+  /* Set transmission flag: transfer complete */
+  //UartReady = SET;
+	SERIAL1_rx_buffer_end++;
+	if(SERIAL1_rx_buffer_end>=SERIAL1_BUFFER_LEN)
+	{
+		//SERIAL1_rx_buffer_end-=SERIAL1_BUFFER_LEN;
+		SERIAL1_rx_buffer_end=0;
+	}
+	//SERCOM0_USART_Read(&SERIAL1_rx_buffer[SERIAL1_rx_buffer_end], 1);
+	HAL_UART_Receive_IT(&huart2, &SERIAL1_rx_buffer[SERIAL1_rx_buffer_end], 1);
+}
+void HAL_UART2_ErrorCallback(UART_HandleTypeDef *UartHandle)
+{
+	HAL_UART_Receive_IT(&huart2, &SERIAL1_rx_buffer[SERIAL1_rx_buffer_end], 1);
+}
+
 /**
   * @brief  This function is executed in case of error occurrence.
   * @retval None

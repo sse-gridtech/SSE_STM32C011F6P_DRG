@@ -681,7 +681,7 @@ void ST7789_Layout_2(void)
 {
 	char buff[8] = {};
 #if (RADIO == 0)
-	HexU8ToString(&buff[0],medidor.en_ativa[0],3);
+	HexU8ToString(&buff[0],&medidor.en_ativa[0],3);
 	ST7789_WriteString(10, 5, "C4", 4, 1, WHITE, BLACK);
 	ST7789_DrawLine(0, 30, 318, 30, ORANGE);
 	ST7789_WriteString(10, 55, "103", 4, 2, WHITE, BLACK);
@@ -701,7 +701,7 @@ void ST7789_Layout_3(void)
 {
 	char buff[8] = {};
 #if (RADIO == 0)
-	HexU8ToString(&buff[0],medidor.en_ativa[0],3);
+	HexU8ToString(&buff[0],&medidor.en_ativa[0],3);
 	ST7789_WriteString(10, 5, "C1", 4, 1, WHITE, BLACK);
 	ST7789_DrawLine(0, 30, 318, 30, ORANGE);
 	ST7789_WriteString(10, 55, "003", 4, 2, WHITE, BLACK);

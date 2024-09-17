@@ -24,10 +24,10 @@ static const uint32_t SSE_FW_VERSION_3=0x12;
 static const uint32_t DTHL=0x10130319; 	// HH DD MM AA
 static const uint8_t  DTHM=0x25;		// mm
 //--------MEDIDOR TIPO----------------------
-#define RADIO 1
+#define RADIO 0
 #if RADIO == 0
 #define MEDIDOR_TIPO    MEDIDOR_TIPO_1_PIMA //MEDIDOR_TIPO_2_NBR //MEDIDOR_TIPO_3_NBR_EXT  //MEDIDOR_TIPO_1_PIMA
 #else
-#define MEDIDOR_TIPO    MEDIDOR_TIPO_0_NOMED
+#define MEDIDOR_TIPO    MEDIDOR_TIPO_1_PIMA
 #endif
 #endif
