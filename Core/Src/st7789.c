@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include "sse_util.h"
+#include "custom_timer.h"
 
 #ifdef USE_DMA
 uint16_t DMA_MIN_SIZE = 16;
@@ -31,6 +32,10 @@ const fontinfo fontdata [] = {
    { NULL, 0, 0, 0 },
    { NULL, 0, 0, 0 }
 };
+
+uint8_t Layout = 1;
+
+uint32_t now_timer = 0;
 
 /**
  * @brief Write command to ST7789 controller
@@ -170,6 +175,8 @@ void ST7789_Init(void)
 	HAL_Delay(10);
 	ST7789_RST_Set();
 	HAL_Delay(20);
+
+	HAL_GPIO_WritePin(ST7789_BLK_Port, ST7789_BLK_Pin, GPIO_PIN_SET);
 
 	ST7789_WriteCommand(ST7789_COLMOD);		//	Set color mode
 	ST7789_WriteSmallData(ST7789_COLOR_MODE_16bit);
@@ -715,4 +722,29 @@ void ST7789_Layout_3(void)
 	ST7789_WriteString(130, 55, buff, 4, 2, WHITE, BLACK);
 	ST7789_WriteString(250, 115, displayQuantities[04].unit, 4, 1, WHITE, BLACK);
 #endif
+}
+
+void Layout_loop(void)
+{
+	if(TIM_getSecs()-now_timer>2)
+	{
+		switch(Layout)
+		{
+		case 1:
+			ST7789_Layout();
+			Layout = 2;
+			now_timer = TIM_getSecs();
+			break;
+		case 2:
+			ST7789_Layout_2();
+			Layout = 3;
+			now_timer = TIM_getSecs();
+			break;
+		case 3:
+			ST7789_Layout_3();
+			Layout = 2;
+			now_timer = TIM_getSecs();
+			break;
+		}
+	}
 }

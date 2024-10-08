@@ -22,6 +22,8 @@ extern SPI_HandleTypeDef ST7789_SPI_PORT;
 /* Pin connection*/
 #define ST7789_RST_PORT GPIOB
 #define ST7789_RST_PIN  GPIO_PIN_7
+#define ST7789_BLK_Port GPIOB
+#define ST7789_BLK_Pin  GPIO_PIN_6
 #define ST7789_DC_PORT  GPIOC
 #define ST7789_DC_PIN   GPIO_PIN_14
 
@@ -248,6 +250,7 @@ void ST7789_Init(void);
 void ST7789_Layout(void);
 void ST7789_Layout_2(void);
 void ST7789_Layout_3(void);
+void Layout_loop(void);
 
 
 #endif
