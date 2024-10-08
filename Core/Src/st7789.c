@@ -672,10 +672,10 @@ void ST7789_Layout(void)
 	ST7789_WriteString(10, 150, "Equip.", 2, 1, ORANGE, BLACK);
 	ST7789_WriteString(10, 120, "Codigo", 2, 1, ORANGE, BLACK);
 	ST7789_WriteString(130, 120, "Valor", 2, 1, ORANGE, BLACK);
-	ST7789_WriteString(60, 147, "31604211", 4, 1, WHITE, BLACK);
+	//ST7789_WriteString(60, 147, "31604211", 4, 1, WHITE, BLACK);
 	ST7789_WriteString(10, 5, "C1: Totalizador Geral", 4, 1, WHITE, BLACK);
-	ST7789_WriteString(10, 55, "003", 4, 2, WHITE, BLACK);
-	ST7789_WriteString(130, 55, "8418.27", 4, 2, WHITE, BLACK);
+	/*ST7789_WriteString(10, 55, "003", 4, 2, WHITE, BLACK);
+	ST7789_WriteString(130, 55, "8418.27", 4, 2, WHITE, BLACK);*/
 	ST7789_WriteString(250, 115, "KWh", 4, 1, WHITE, BLACK);
 	ST7789_DrawRectangle(0, 1, 318, 169, ORANGE);
 	ST7789_DrawLine(0, 30, 318, 30, ORANGE);
@@ -687,13 +687,18 @@ void ST7789_Layout(void)
 void ST7789_Layout_2(void)
 {
 	char buff[8] = {};
+	char id[12] = {};
 #if (RADIO == 0)
-	HexU8ToString(&buff[0],&medidor.en_ativa[0],3);
+	HexU8ToString(&buff[0],&medidor.en_ativareversa[0],3);
+	HexU8ToString(&id[0],&medidor.id_[1],5);
 	ST7789_WriteString(10, 5, "C4", 4, 1, WHITE, BLACK);
 	ST7789_DrawLine(0, 30, 318, 30, ORANGE);
 	ST7789_WriteString(10, 55, "103", 4, 2, WHITE, BLACK);
+	ST7789_WriteString(130, 55, "       ", 4, 2, WHITE, BLACK);
 	ST7789_WriteString(130, 55, buff, 4, 2, WHITE, BLACK);
+	ST7789_WriteString(60, 147, id, 4, 1, WHITE, BLACK);
 	ST7789_WriteString(250, 115, "KWh", 4, 1, WHITE, BLACK);
+	ST7789_DrawRectangle(0, 1, 318, 169, ORANGE);
 #else
 	HexU8ToString(&buff[0],displayQuantities[105].value,4);
 	ST7789_WriteString(10, 5, displayQuantities[105].desc, 4, 1, WHITE, BLACK);
@@ -707,11 +712,14 @@ void ST7789_Layout_2(void)
 void ST7789_Layout_3(void)
 {
 	char buff[8] = {};
+	char id[12] = {};
 #if (RADIO == 0)
 	HexU8ToString(&buff[0],&medidor.en_ativa[0],3);
+	HexU8ToString(&id[0],&medidor.id_[1],5);
 	ST7789_WriteString(10, 5, "C1", 4, 1, WHITE, BLACK);
 	ST7789_DrawLine(0, 30, 318, 30, ORANGE);
 	ST7789_WriteString(10, 55, "003", 4, 2, WHITE, BLACK);
+	ST7789_WriteString(130, 55, "       ", 4, 2, WHITE, BLACK);
 	ST7789_WriteString(130, 55, buff, 4, 2, WHITE, BLACK);
 	ST7789_WriteString(250, 115, "KWh", 4, 1, WHITE, BLACK);
 #else
@@ -732,9 +740,6 @@ void Layout_loop(void)
 		{
 		case 1:
 			ST7789_Layout();
-			Layout = 2;
-			now_timer = TIM_getSecs();
-			break;
 		case 2:
 			ST7789_Layout_2();
 			Layout = 3;

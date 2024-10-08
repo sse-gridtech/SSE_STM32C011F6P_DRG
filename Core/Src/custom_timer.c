@@ -7,7 +7,7 @@
 #include "custom_timer.h"
 #include "custom_gpio.h"
 
-TIM_HandleTypeDef htim1;
+TIM_HandleTypeDef htim14;
 #if USE_SYSTICK_AS_MS == 0
 TIM_HandleTypeDef htim3;
 #endif
@@ -18,7 +18,7 @@ static uint8_t LED1_control;
 static uint8_t LED1_acc;
 static uint8_t LED1_acc2;
 
-static void MX_TIM1_Init(void);
+static void MX_TIM14_Init(void);
 #if USE_SYSTICK_AS_MS == 0
 static void MX_TIM3_Init(void);
 #endif
@@ -64,7 +64,7 @@ void TIMER_Start(void)
 {
 	/* USER CODE BEGIN 2 */
 	/* Start Channel1 - TIMER2 */
-	if (HAL_TIM_Base_Start_IT(&htim1) != HAL_OK)
+	if (HAL_TIM_Base_Start_IT(&htim14) != HAL_OK)
 	{
 		/* Starting Error */
 		TIMER_Error_Handler();
@@ -82,7 +82,7 @@ void TIMER_Start(void)
 
 void TIMER_Init(void)
 {
-	MX_TIM1_Init();
+	MX_TIM14_Init();
 #if USE_SYSTICK_AS_MS == 0
 	MX_TIM3_Init();
 #endif
@@ -145,49 +145,33 @@ void LED1_Control(void)
 	}
 }
 /**
-  * @brief TIM1 Initialization Function
+  * @brief TIM14 Initialization Function
   * @param None
   * @retval None
   */
-static void MX_TIM1_Init(void)
+static void MX_TIM14_Init(void)
 {
 
-  /* USER CODE BEGIN TIM1_Init 0 */
+  /* USER CODE BEGIN TIM14_Init 0 */
 
-  /* USER CODE END TIM1_Init 0 */
+  /* USER CODE END TIM14_Init 0 */
 
-  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
-  TIM_MasterConfigTypeDef sMasterConfig = {0};
+  /* USER CODE BEGIN TIM14_Init 1 */
 
-  /* USER CODE BEGIN TIM1_Init 1 */
-
-  /* USER CODE END TIM1_Init 1 */
-  htim1.Instance = TIM1;
-  htim1.Init.Prescaler = PRESCALER_VALUE;
-  htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim1.Init.Period = PERIOD_VALUE_1s;
-  htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim1.Init.RepetitionCounter = 0;
-  htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
-  if (HAL_TIM_Base_Init(&htim1) != HAL_OK)
+  /* USER CODE END TIM14_Init 1 */
+  htim14.Instance = TIM14;
+  htim14.Init.Prescaler = PRESCALER_VALUE;
+  htim14.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim14.Init.Period = PERIOD_VALUE_1s;
+  htim14.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim14.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim14) != HAL_OK)
   {
 	  TIMER_Error_Handler();
   }
-  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-  if (HAL_TIM_ConfigClockSource(&htim1, &sClockSourceConfig) != HAL_OK)
-  {
-	  TIMER_Error_Handler();
-  }
-  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
-  sMasterConfig.MasterOutputTrigger2 = TIM_TRGO2_RESET;
-  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  if (HAL_TIMEx_MasterConfigSynchronization(&htim1, &sMasterConfig) != HAL_OK)
-  {
-	  TIMER_Error_Handler();
-  }
-  /* USER CODE BEGIN TIM1_Init 2 */
+  /* USER CODE BEGIN TIM14_Init 2 */
 
-  /* USER CODE END TIM1_Init 2 */
+  /* USER CODE END TIM14_Init 2 */
 
 }
 

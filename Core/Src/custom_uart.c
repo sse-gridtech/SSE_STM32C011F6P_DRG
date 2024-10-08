@@ -11,7 +11,7 @@
 
 #define SERIAL0_MINIMAL     0
 
-#define SERIAL0_BAUD_RATE	9600
+#define SERIAL0_BAUD_RATE	2400
 #define SERIAL0_BUFFER_LEN  300//300
 UART_HandleTypeDef huart1;
 uint8_t  SERIAL0_rx_buffer[SERIAL0_BUFFER_LEN];
